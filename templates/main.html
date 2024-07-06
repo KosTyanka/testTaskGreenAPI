@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <script>
+        async function getSettings() {
+            const apiUrl = "{{ api_url }}";
+            const idInstance = "{{ id_instance }}";
+            const apiTokenInstance = "{{ api_token_instance }}";
+            const url = `${apiUrl}/waInstance${idInstance}/getSettings/${apiTokenInstance}`;
+
+            const response = await fetch(url, { method: 'GET' });
+            const data = await response.json();
+            document.getElementById('settingsOutput').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function getStateInstance() {
+            const apiUrl = "{{ api_url }}";
+            const idInstance = "{{ id_instance }}";
+            const apiTokenInstance = "{{ api_token_instance }}";
+            const url = `${apiUrl}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
+
+            const response = await fetch(url, { method: 'GET' });
+            const data = await response.json();
+            document.getElementById('getStateInstanceOutput').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function sendMessage(phone_number, textMessage) {
+            const apiUrl = "{{ api_url }}";
+            const idInstance = "{{ id_instance }}";
+            const apiTokenInstance = "{{ api_token_instance }}";
+            const url = `${apiUrl}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
+
+            const requestBody = {
+                chatId: '77057613126@c.us', 
+                message: 'test'
+            };
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                if (!response.ok) {
+                    throw new Error('error');
+                }
+                const data = await response.json();
+                document.getElementById('sendMessageOutput').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('sendMessageOutput').textContent = error;
+            }
+        }
+
+        async function sendFileByUrl() {
+            const apiUrl = "{{ api_url }}";
+            const idInstance = "{{ id_instance }}";
+            const apiTokenInstance = "{{ api_token_instance }}";
+            const url = `${apiUrl}/waInstance${idInstance}/sendFileByUrl/${apiTokenInstance}`;
+
+            const requestBody = {
+                chatId: '77057613126@c.us', 
+                urlFile: 'https://abc-profmed.ru/g/s3/lp/lpc.v4/file/TestPDF.pdf',
+                fileName: 'test.pdf'
+            };
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                if (!response.ok) {
+                    throw new Error('error');
+                }
+                const data = await response.json();
+                document.getElementById('sendFileByUrlOutput').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('sendFileByUrlOutput').textContent = error;
+            }
+        }
+        
+    </script>
+</head>
+<!--POST {{apiUrl}}/waInstance{{idInstance}}/sendFileByUrl/{{apiTokenInstance}}-->
+<body>
+    <h1>Test</h1>
+    <button onclick="getSettings()">getSettings</button>
+    <p id="settingsOutput"></p>
+    <button onclick="getStateInstance()">getStateInstance</button>
+    <p id="getStateInstanceOutput"></p>
+    <button onclick="sendMessage()">sendMessage для теста будет мой номер</button>
+    <p id="sendMessageOutput"></p>
+    <button onclick="sendFileByUrl()">sendFileByUrl</button>
+    <p id="sendFileByUrlOutput"></p>
+</body>
+</html>
